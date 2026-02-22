@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Iuran Bulanan - TPQ Al-Hijrah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #800000 0%, #4a0404 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 4px solid #ffd700;
+        }
+        
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            overflow: hidden;
+        }
+        
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .header h1 {
+            color: #800000;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #b8860b;
+            font-weight: 600;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 3px solid #ffd700;
+        }
+        
+        .card-title {
+            color: #800000;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            color: #4a0404;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .radio-option {
+            flex: 1;
+        }
+        
+        .radio-option input {
+            display: none;
+        }
+        
+        .radio-label {
+            display: block;
+            padding: 12px;
+            background: #fff8e7;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a0404;
+        }
+        
+        .radio-option input:checked + .radio-label {
+            background: #800000;
+            color: white;
+            border-color: #ffd700;
+        }
+        
+        .payment-info {
+            background: #fff8e7;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .payment-info.active {
+            display: block;
+        }
+        
+        .account-number {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #800000;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px dashed #ffd700;
+            margin: 10px 0;
+        }
+        
+        .nominal-box {
+            background: #800000;
+            color: #ffd700;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+            border: 2px solid #ffd700;
+        }
+        
+        .nominal-box .label {
+            font-size: 0.9em;
+            color: white;
+        }
+        
+        .nominal-box .amount {
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #ffd700;
+            color: #4a0404;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover {
+            background: #ffed4e;
+        }
+        
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn-whatsapp {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .success.show {
+            display: block;
+        }
+        
+        .next-steps {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+            display: none;
+        }
+        
+        .next-steps.show {
+            display: block;
+        }
+        
+        .next-steps h4 {
+            color: #004085;
+            margin-bottom: 10px;
+        }
+        
+        .next-steps ol {
+            margin-left: 20px;
+            color: #004085;
+        }
+        
+        .next-steps li {
+            margin-bottom: 5px;
+        }
+        
+        .admin-link {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        
+        .admin-link a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://i.ibb.co.com/1YqHqwMH" alt="Logo TPQ Al-Hijrah" onerror="this.src='https://via.placeholder.com/100?text=TPQ'">
+            </div>
+            <h1>TPQ AL-HIJRAH</h1>
+            <p>IURAN BULANAN SANTRI</p>
+        </div>
+
+        <!-- Form akan disubmit ke Google Forms via iframe -->
+        <form id="paymentForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeXzPxF0VG_7fDlMVpLkiLz4HIdIWubWtl1YHV7sLP94Rc-UQ/formResponse" method="POST" target="hidden-iframe" onsubmit="handleSubmit(event)">
+            
+            <div class="card">
+                <h2 class="card-title">Data Santri</h2>
+                
+                <div class="form-group">
+                    <label>Nama Lengkap Santri *</label>
+                    <input type="text" name="entry.531028281" required placeholder="Masukkan nama santri">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Wali/Orang Tua *</label>
+                    <input type="text" name="entry.1842165465" required placeholder="Masukkan nama wali">
+                </div>
+
+                <div class="form-group">
+                    <label>Kelas *</label>
+                    <select name="entry.378252492" required>
+                        <option value="">Pilih Kelas</option>
+                        <option value="Kelas 1">Kelas 1</option>
+                        <option value="Kelas 2">Kelas 2</option>
+                        <option value="Kelas 3">Kelas 3</option>
+                        <option value="Kelas 4">Kelas 4</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nomor HP/WA Aktif *</label>
+                    <input type="tel" name="entry.1463765126" required placeholder="08xxxxxxxxxx">
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Pembayaran Iuran Bulanan</h2>
+                
+                <div class="nominal-box">
+                    <div class="label">Iuran Bulanan Santri</div>
+                    <div class="amount">Rp 50.000</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Bulan Pembayaran *</label>
+                    <select name="entry.1908335714" required>
+                        <option value="">Pilih Bulan</option>
+                        <option value="Januari">Januari</option>
+                        <option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option>
+                        <option value="April">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option>
+                        <option value="Agustus">Agustus</option>
+                        <option value="September">September</option>
+                        <option value="Oktober">Oktober</option>
+                        <option value="November">November</option>
+                        <option value="Desember">Desember</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tahun *</label>
+                    <select name="entry.1020174884" required>
+                        <option value="2026">2026</option>
+                        <option value="2027" selected>2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Metode Pembayaran *</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="bank" name="entry.920998387" value="Transfer Bank BSI" required onclick="showPayment('bank')">
+                            <label for="bank" class="radio-label">Transfer Bank</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="dana" name="entry.920998387" value="DANA" required onclick="showPayment('dana')">
+                            <label for="dana" class="radio-label">DANA</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bankInfo" class="payment-info">
+                    <h3 style="color: #800000; margin-bottom: 10px;">Bank Syariah Indonesia (BSI)</h3>
+                    <p style="font-size: 0.9em; color: #666;">a.n. TPQ Al-Hijrah</p>
+                    <div class="account-number">1234567890</div>
+                    <button type="button" onclick="copyText('1234567890')" style="background: #800000; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">📋 Salin</button>
+                </div>
+
+                <div id="danaInfo" class="payment-info">
+                    <h3 style="color: #800000; margin-bottom: 10px;">DANA</h3>
+                    <p style="font-size: 0.9em; color: #666;">a.n. TPQ Al-Hijrah</p>
+                    <div class="account-number">082162599377</div>
+                    <button type="button" onclick="copyText('082162599377')" style="background: #800000; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">📋 Salin</button>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Nama Pengirim (sesuai rekening/DANA) *</label>
+                    <input type="text" name="entry.604556800" required placeholder="Nama pengirim">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">✓ KONFIRMASI PEMBAYARAN</button>
+            
+            <div id="errorMsg" class="error">
+                Terjadi kesalahan. Silakan coba lagi.
+            </div>
+            
+            <div id="successMsg" class="success">
+                ✅ Data berhasil disimpan!<br>
+                <small>Silakan kirim bukti transfer ke WhatsApp Admin.</small>
+            </div>
+            
+            <div id="nextSteps" class="next-steps">
+                <h4>📋 Langkah Selanjutnya:</h4>
+                <ol>
+                    <li>Screenshot bukti transfer Anda</li>
+                    <li>Klik tombol WhatsApp di bawah untuk kirim bukti</li>
+                    <li>Admin akan memverifikasi pembayaran</li>
+                </ol>
+                <a id="waLink" href="#" target="_blank" class="btn-whatsapp">
+                    📤 Kirim Bukti Transfer ke Admin
+                </a>
+            </div>
+        </form>
+
+        <!-- Iframe tersembunyi untuk submit form -->
+        <iframe name="hidden-iframe" id="hidden-iframe" style="display: none;" onload="iframeLoaded()"></iframe>
+
+        <div class="admin-link">
+            <a href="https://docs.google.com/forms/d/1FAIpQLSeXzPxF0VG_7fDlMVpLkiLz4HIdIWubWtl1YHV7sLP94Rc-UQ/edit#responses" target="_blank">
+                🔐 Login Admin (Lihat Data Pembayaran)
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: rgba(255,255,255,0.8); font-size: 0.8em;">
+            <p>Butuh bantuan? Hubungi Admin: <strong>082162599377</strong></p>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_WA = '6282162599377';
+        let formSubmitted = false;
+        
+        function showPayment(method) {
+            document.getElementById('bankInfo').classList.remove('active');
+            document.getElementById('danaInfo').classList.remove('active');
+            if (method === 'bank') document.getElementById('bankInfo').classList.add('active');
+            else document.getElementById('danaInfo').classList.add('active');
+        }
+        
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => alert('Nomor berhasil disalin: ' + text))
+            .catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert('Nomor berhasil disalin: ' + text);
+            });
+        }
+        
+        function handleSubmit(e) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Mengirim data...';
+            formSubmitted = true;
+            
+            // Ambil data untuk WhatsApp
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Buat pesan WhatsApp
+            const pesan = `*KONFIRMASI PEMBAYARAN TPQ AL-HIJRAH*%0A%0A` +
+                         `Nama Santri: ${data['entry.531028281']}%0A` +
+                         `Kelas: ${data['entry.378252492']}%0A` +
+                         `Nama Wali: ${data['entry.1842165465']}%0A` +
+                         `Bulan: ${data['entry.1908335714']} ${data['entry.1020174884']}%0A` +
+                         `Metode: ${data['entry.920998387']}%0A` +
+                         `Nama Pengirim: ${data['entry.604556800']}%0A` +
+                         `Nominal: Rp 50.000%0A%0A` +
+                         `*Mohon ditunggu verifikasi admin.*`;
+            
+            document.getElementById('waLink').href = `https://wa.me/${ADMIN_WA}?text=${pesan}`;
+            
+            // Form akan otomatis submit ke iframe
+            // Callback di handle oleh iframeLoaded
+        }
+        
+        function iframeLoaded() {
+            if (!formSubmitted) return; // Hindari trigger saat load pertama
+            
+            // Tunggu sebentar untuk memastikan data tersimpan
+            setTimeout(() => {
+                document.getElementById('successMsg').classList.add('show');
+                document.getElementById('nextSteps').classList.add('show');
+                document.getElementById('nextSteps').scrollIntoView({ behavior: 'smooth' });
+                
+                // Reset form
+                document.getElementById('paymentForm').reset();
+                document.getElementById('bankInfo').classList.remove('active');
+                document.getElementById('danaInfo').classList.remove('active');
+                
+                const btn = document.getElementById('submitBtn');
+                btn.disabled = false;
+                btn.textContent = '✓ KONFIRMASI PEMBAYARAN';
+                formSubmitted = false;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
